@@ -43,13 +43,14 @@ body {
 
 /* App */
 #app {
-    position: absolute;
+    position: fixed;
     top: 20px;
     width: 320px;
     height: 100%;
     background-color: purple;
     overflow: hidden;
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 #feedPanel {

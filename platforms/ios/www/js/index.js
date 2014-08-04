@@ -63,11 +63,16 @@ function userSwipe(element, e, direction) {
 	changeFocus(element, newFocus);
 }
 
-// Change panel focus from oldFocus to newFocus, accomplishing transition animation in the process
-// oldFocus and newFocus should be jQuery objects of class ".panel"
+// Change panel focus from oldFocus to newFocus, accomplishing transition animation in the process.
+// oldFocus transitions out and newFocus transitions in.
+// oldFocus and newFocus should be jQuery objects of class ".panel".
 function changeFocus(oldFocus, newFocus) {
 	// stop all previous transitions
 	$(".panel").stop();
+	// set scroll so you start at the top of new panel
+	$(".panel").not(".focused").css("top", $("#app").scrollTop());
+	// make newly focused panel visible
+	newFocus.css("display", "block");
 
 	newFocus.addClass("focused");
 	oldFocus.removeClass("focused");
@@ -80,14 +85,13 @@ function changeFocus(oldFocus, newFocus) {
 		swipeOutTarget = 25;
 	}
 
-	// slide new focused panel in
-	newFocus.transition({left: "0%"});
+	// slide new focused panel in and then reset scroll
+	newFocus.transition({left: "0%"}, function() {
+		newFocus.css("top", "0");
+		$("#app").scrollTop(0);
+	});
 	// slide old focused panel out
-	oldFocus.transition({left: swipeOutTarget + "%"}).transition({left: (swipeOutTarget * 4) + "%", duration: 0});
-
+	oldFocus.transition({left: swipeOutTarget + "%"}).transition({left: (swipeOutTarget * 4) + "%", duration: 0}, function(){
+		oldFocus.css("display", "none");
+	});
 }
-
-
-
-
-
